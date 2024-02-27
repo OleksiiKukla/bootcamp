@@ -1,17 +1,16 @@
 import pytest
-from rest_framework.test import APIClient
-from rest_framework import status as http_statuses
 from django.urls import reverse
+from rest_framework import status as http_statuses
+from rest_framework.test import APIClient
 
-
-topics_endpoint = 'api/topics/'
-
+topics_endpoint = "api/topics/"
 
 
 class TestTopicViewSet:
     def setup_method(self):
         self.client = APIClient()
-    #todo Make tests
+
+    # todo Make tests
 
     # @pytest.mark.django_db
     # def test_create_topic(self):

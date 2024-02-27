@@ -13,17 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+from django.contrib import admin
+from django.urls import include, path
 from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
 from bootcamp.drf_spectacular_router import SpectacularAPIView
-from django.contrib import admin
-from django.urls import path, include
-
 from profskills.views import TopicViewSet
 
 router = DefaultRouter()
-router.register(r'topics', TopicViewSet, basename='Topic')
+router.register(r"topics", TopicViewSet, basename="Topic")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

@@ -14,7 +14,8 @@ class Skill(models.Model):
     name = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True, null=True)
     topics = models.ManyToManyField(
-        Topic, blank=True,
+        Topic,
+        blank=True,
     )
 
 
@@ -22,6 +23,6 @@ class Professions(models.Model):
     name = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True, null=True)
     skills = models.ManyToManyField(
-        Skill, blank=True,
+        Skill,
+        blank=True,
     )
-

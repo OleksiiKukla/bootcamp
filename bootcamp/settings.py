@@ -11,13 +11,12 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -84,14 +83,14 @@ WSGI_APPLICATION = "bootcamp.wsgi.application"
 
 # Database
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': os.environ.get("POSTGRES_DB"),
-       'USER': os.environ.get("POSTGRES_USER"),
-       'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
-       'HOST': os.environ.get("POSTGRES_HOST"),
-       'PORT': os.environ.get("POSTGRES_PORT"),
-   }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": os.environ.get("POSTGRES_HOST"),
+        "PORT": os.environ.get("POSTGRES_PORT"),
+    }
 }
 
 # Password validation
@@ -133,7 +132,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # By Default swagger ui is available only to admin user(s). You can change permission classes to change that
