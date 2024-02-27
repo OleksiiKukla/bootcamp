@@ -10,14 +10,22 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.serializers import CharField
 
+from profskills.crud.profession_crud import profession_crud
 from profskills.crud.skill_crud import skill_crud
 from profskills.crud.topic_crud import topic_crud
-from profskills.serializers import SkillSerializer, TopicSerializer
+from profskills.serializers import (
+    ProfessionSerializer,
+    SkillSerializer,
+    TopicSerializer,
+)
 
 
 @extend_schema(tags=["Topic"])
 class TopicViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
+
+    def get_serializer(self, *args, **kwargs):
+        return TopicSerializer(*args, **kwargs)
 
     @action(
         detail=False,
@@ -27,7 +35,7 @@ class TopicViewSet(viewsets.ViewSet):
     )
     def get_all(self, request):
         topics = topic_crud.all()
-        serializer = TopicSerializer(topics, many=True)
+        serializer = self.get_serializer(topics, many=True)
 
         return Response(
             serializer.data,
@@ -49,7 +57,7 @@ class TopicViewSet(viewsets.ViewSet):
             pet_project_ideas=request.data["pet_project_ideas"],
             useful_links=request.data["useful_links"],
         )
-        serializer = TopicSerializer(topic)
+        serializer = self.get_serializer(topic)
         return Response(
             serializer.data,
             status=status.HTTP_201_CREATED,
@@ -99,7 +107,7 @@ class TopicViewSet(viewsets.ViewSet):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
-        serializer = TopicSerializer(topic)
+        serializer = self.get_serializer(topic)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
@@ -149,7 +157,7 @@ class TopicViewSet(viewsets.ViewSet):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
-        serializer = TopicSerializer(topic)
+        serializer = self.get_serializer(topic)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
@@ -160,6 +168,9 @@ class TopicViewSet(viewsets.ViewSet):
 class SkillViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
+    def get_serializer(self, *args, **kwargs):
+        return SkillSerializer(*args, **kwargs)
+
     @action(
         detail=False,
         methods=["get"],
@@ -168,7 +179,7 @@ class SkillViewSet(viewsets.ViewSet):
     )
     def get_all(self, request):
         skills = skill_crud.all()
-        serializer = SkillSerializer(skills, many=True)
+        serializer = self.get_serializer(skills, many=True)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
@@ -210,7 +221,7 @@ class SkillViewSet(viewsets.ViewSet):
             description=request.data["description"],
             topics=topics,
         )
-        serializer = SkillSerializer(topic)
+        serializer = self.get_serializer(topic)
         return Response(
             serializer.data,
             status=status.HTTP_201_CREATED,
@@ -260,7 +271,7 @@ class SkillViewSet(viewsets.ViewSet):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
-        serializer = SkillSerializer(skill)
+        serializer = self.get_serializer(skill)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
@@ -296,7 +307,157 @@ class SkillViewSet(viewsets.ViewSet):
                 },
                 status=status.HTTP_404_NOT_FOUND,
             )
-        serializer = SkillSerializer(skill)
+        serializer = self.get_serializer(skill)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+
+@extend_schema(tags=["Profession"])
+class ProfessionViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
+
+    def get_serializer(self, *args, **kwargs):
+        return ProfessionSerializer(*args, **kwargs)
+
+    @action(
+        detail=False,
+        methods=["get"],
+        name="Get all",
+        url_path="get_all",
+    )
+    def get_all(self, request):
+        professions = profession_crud.all()
+        serializer = self.get_serializer(professions, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+    @extend_schema(
+        request=ProfessionSerializer,
+        responses={
+            "201": OpenApiResponse(
+                response=ProfessionSerializer,
+            ),
+            "404": OpenApiResponse(
+                description="Profession object with ID 'profession_id' does not exist.",
+                response=inline_serializer(
+                    name="Profession object with ID 'profession_id' does not exist.",
+                    fields={
+                        "error": bool,
+                        "message": CharField(),
+                    },
+                ),
+            ),
+        },
+    )
+    def create(self, request):
+        skills = request.data["skills"]
+        for skill_id in skills:
+            skill = skill_crud.get_by_id(skill_id)
+            if not skill:
+                return Response(
+                    data={
+                        "error": True,
+                        "message": f"Skill object with ID '{skill_id}' does not exist.",
+                    },
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+        topic = profession_crud.create(
+            name=request.data["name"],
+            description=request.data["description"],
+            skills=skills,
+        )
+        serializer = self.get_serializer(topic)
+        return Response(
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+        )
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="id",
+                type={"type": "int"},
+                location=OpenApiParameter.QUERY,
+                required=False,
+                style="form",
+                explode=False,
+            )
+        ],
+        responses={
+            "200": OpenApiResponse(
+                response=ProfessionSerializer,
+            ),
+            "404": OpenApiResponse(
+                description="Profession object with ID 'id' does not exist.",
+                response=inline_serializer(
+                    name="Profession object with ID 'id' does not exist.",
+                    fields={
+                        "error": bool,
+                        "message": CharField(),
+                    },
+                ),
+            ),
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        name="Get by ID",
+        url_path="get_by_id",
+    )
+    def get_by_id(self, request):
+        profession_id = request.GET.get("id")
+        profession = profession_crud.get_by_id(profession_id)
+        if not profession:
+            return Response(
+                data={
+                    "error": True,
+                    "message": f"Profession object with ID '{profession_id}' does not exist.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = self.get_serializer(profession)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="name",
+                type={"type": "str"},
+                location=OpenApiParameter.QUERY,
+                required=False,
+                style="form",
+                explode=False,
+            )
+        ],
+        responses=ProfessionSerializer(),
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        name="Get by name",
+        url_path="get_by_name",
+    )
+    def get_by_name(self, request):
+        profession_name = request.GET.get("name")
+        profession = profession_crud.get_by_name(profession_name)
+        if not profession:
+            return Response(
+                data={
+                    "error": True,
+                    "message": f"Profession object with Name '{profession_name}' does not exist.",
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = self.get_serializer(profession)
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
