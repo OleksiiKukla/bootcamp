@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from drf_spectacular.utils import (
     OpenApiParameter,
-    extend_schema
+    extend_schema, OpenApiResponse
 )
 from rest_framework import viewsets
 
@@ -29,7 +29,14 @@ class TopicViewSet(viewsets.ViewSet):
             serializer.data,
             status=status.HTTP_200_OK,
         )
-
+    @extend_schema(
+        request=TopicSerializer,
+        responses={
+            "201": OpenApiResponse(
+                response=TopicSerializer,
+            ),
+        },
+    )
     def create(self, request):
         topic = topic_crud.create(
             name=request.data['name'],
