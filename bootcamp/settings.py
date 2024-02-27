@@ -21,7 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    default="django-insecure-t34mdag!)cq6bb5dv$0$w(pw6&tp4cf)vdqqfb^+m0=z&f=w(c",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -125,6 +128,7 @@ USE_TZ = True
 
 
 STATIC_URL = "static/"
+STATIC_ROOT = "/bootcamp/static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
