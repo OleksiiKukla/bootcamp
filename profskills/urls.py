@@ -2,7 +2,7 @@ from django.urls import path
 
 from profskills import views
 
-# app_name = "topics"
+app_name = 'profskills'
 
 urlpatterns = [
     path('topics/get_all/', views.TopicViewSet.as_view(), name='get_all_topics'),
