@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    image: bootcamp-web
+    container_name: bootcamp-web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - bootcamp-db
+    links:
+      - bootcamp-db
+    restart: always
+    networks:
+      - python-net
+    env_file:
+      - .env
+
+  bootcamp-db:
+    container_name: bootcamp-db
+    image: postgres:latest
+    env_file:
+      - .env
+    networks:
+      - python-net
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_python_bootcamp:/var/lib/postgresql/data
+
+networks:
+  python-net:
+    driver: bridge
+    name: python-net
+
+volumes:
+  postgres_python_bootcamp:
