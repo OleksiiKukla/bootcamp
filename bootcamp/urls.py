@@ -20,11 +20,12 @@ from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
 from bootcamp.drf_spectacular_router import SpectacularAPIView
-from profskills.views import SkillViewSet, TopicViewSet
+from profskills.views import ProfessionViewSet, SkillViewSet, TopicViewSet
 
 router = DefaultRouter()
 router.register(r"topics", TopicViewSet, basename="Topic")
 router.register(r"skills", SkillViewSet, basename="Skill")
+router.register(r"professions", ProfessionViewSet, basename="Profession")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

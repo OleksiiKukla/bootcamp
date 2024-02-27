@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Topic(models.Model):
     name = models.CharField(max_length=255, blank=True)
@@ -19,7 +17,7 @@ class Skill(models.Model):
     )
 
 
-class Professions(models.Model):
+class Profession(models.Model):
     name = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True, null=True)
     skills = models.ManyToManyField(

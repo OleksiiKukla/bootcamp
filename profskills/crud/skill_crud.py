@@ -29,7 +29,8 @@ class SkillCrud:
             name=name,
             description=description,
         )
-        skill.topics.add(*topics)
+        if topics:
+            skill.topics.add(*topics)
         return skill
 
 
