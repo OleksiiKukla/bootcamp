@@ -17,7 +17,7 @@ Start app command:
 
     python manage.py runserver
 
-Swager:
+Swagger:
 
     http://127.0.0.1:8000/api/docs/
 
