@@ -9,6 +9,10 @@ Migrate database:
 
     python manage.py migrate
 
+Create and populate your db:
+
+    psql -U postgres -h localhost -d your_db_name < ./dump_bootcamp.sql
+
 Start app command:
 
     python manage.py runserver
