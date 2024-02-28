@@ -10,12 +10,16 @@ class TopicSerializer(serializers.ModelSerializer):
 
 
 class SkillSerializer(serializers.ModelSerializer):
+    topics = TopicSerializer(many=True, read_only=True)
+
     class Meta:
         model = Skill
         fields = "__all__"
 
 
 class ProfessionSerializer(serializers.ModelSerializer):
+    skills = SkillSerializer(many=True, read_only=True)
+
     class Meta:
         model = Profession
         fields = "__all__"
