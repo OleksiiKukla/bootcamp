@@ -10,10 +10,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.serializers import CharField
 
-from profskills.crud.profession_crud import profession_crud
-from profskills.crud.skill_crud import skill_crud
-from profskills.crud.topic_crud import topic_crud
-from profskills.serializers import (
+from bootcamp.profskills.crud.profession_crud import profession_crud
+from bootcamp.profskills.crud.skill_crud import skill_crud
+from bootcamp.profskills.crud.topic_crud import topic_crud
+from bootcamp.profskills.serializers import (
     ProfessionSerializer,
     SkillSerializer,
     TopicSerializer,
