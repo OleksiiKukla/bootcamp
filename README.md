@@ -26,7 +26,7 @@ Create .env file from .env_example with your credentials.
 
     sudo docker-compose build
     sudo docker-compose up
-    docker exec -it bootcamp-web-1 bash
+    docker exec -it bootcamp-web bash
     python manage.py migrate
 
 
