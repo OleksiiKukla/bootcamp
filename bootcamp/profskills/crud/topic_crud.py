@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import typing
 
-from profskills.models import Topic
+from bootcamp.profskills.models import Topic
 
 if typing.TYPE_CHECKING:
     from django.db.models import QuerySet

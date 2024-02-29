@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from profskills.models import Profession, Skill, Topic
+from bootcamp.profskills.models import Profession, Skill, Topic
 
 
 class TopicSerializer(serializers.ModelSerializer):

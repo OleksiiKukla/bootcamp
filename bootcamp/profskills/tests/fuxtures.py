@@ -1,6 +1,6 @@
 import pytest
 
-from profskills.models import Profession, Skill, Topic
+from bootcamp.profskills.models import Profession, Skill, Topic
 
 
 # Topic fixtures

@@ -20,7 +20,7 @@ from drf_spectacular.views import SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
 from bootcamp.drf_spectacular_router import SpectacularAPIView
-from profskills.views import ProfessionViewSet, SkillViewSet, TopicViewSet
+from bootcamp.profskills.views import ProfessionViewSet, SkillViewSet, TopicViewSet
 
 router = DefaultRouter()
 router.register(r"topics", TopicViewSet, basename="Topic")
